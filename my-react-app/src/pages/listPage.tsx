@@ -11,55 +11,38 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react"
 import { Button } from "../components/ui/button";
 import { api } from "@/api/api";
-
-// interface ads{
-//     id: number;
-//     title: string;
-//     description: string;
-//     price: number;
-//     category: string;
-//     categoryID: number;
-//     status: string;
-//     priority: string;
-//     createdAt: string;
-//     updatedAt: string;
-//     images: string[];
-//     seller:{
-//         id: null
-//         name: string;
-//         rating: string;
-//         totalAds: number;
-//         registeredAt: string;
-//     };
-//     charecteristics: {
-//         Состояние: string;
-//         Гарантия: string;
-//         Производитель: string;
-//         Модель: string;
-//         Цвет: string;
-//     };
-//     moderationHistory: [];
-// }
+// import { Iads } from "../api/api";
 
 export const listPage = () => {
-    //const [status, setStatus] = React.useState([]);
-    const [sortBy, setSortBy] = React.useState("date");//date, price, priority
-    const [filterBy, setFilterBy] = React.useState("");//status, category, price range, none
-    const [ads, setAds] = React.useState([]);
-    const [searchTerm, setSearchTerm] = React.useState("");
-    const id =1 ;
-    const {data: ad, isLoading, error} = useQuery<ads>({
-        queryKey: ['ad', id],
-        queryFn: () => api.getAds(id),
+    const [page, setPage] = React.useState(1);
+    const [limit, setLimit] = React.useState(10);
+    const [status, setStatus] = React.useState<string | undefined>(undefined);
+    const [categoryId, setCategoryId] = React.useState<number | undefined>(undefined);
+    const [minPrice, setMinPrice] = React.useState<number | undefined>(undefined);
+    const [maxPrice, setMaxPrice] = React.useState<number | undefined>(undefined);
+    const [search, setSearch] = React.useState<string | undefined>(undefined);
+    const [sortBy, setSortBy] = React.useState<string | undefined>(undefined);
+    const [sortOrder, setSortOrder] = React.useState<'asc' | 'desc' | undefined>(undefined);
+    const {data: ads, isLoading, error} = useQuery({
+        queryKey: ['ads', page, limit, status, categoryId, minPrice, maxPrice, search, sortBy, sortOrder],
+        queryFn: () => api.getAllAds({page, limit, status, categoryId, minPrice, maxPrice, search, sortBy, sortOrder}),
     });
+    console.log(ads?.length);
     return (
     <div>
         <header>
             {/*надо потом добавить фильтры и сортировку*/}
+
+            Систему управления объявлениями для модерации
+            
         </header>
+        <></>
         <div>
             {/*надо потом добавить пагинацию и вывод 10 элемнтов*/}
-            {!isLoading && !error && ad && (
+
+            {!isLoading && !error && ads && ads.ads.length > 0 && (
+            <>
+            {ads.ads.map((ad) => (
             <Card class="border-2 border-gray-300 rounded-lg mx-4 my-4 px-4 flex">
             <div class = "flex-1">
                 <CardHeader>
@@ -76,8 +59,8 @@ export const listPage = () => {
                         minute: 'numeric',
                         })}
                         </div>
-                        <div>Статус: {ad.status}</div>
-                        <div>Приоритет: {ad.priority}</div>
+                        <div>Статус: {ads.ads[0].status}</div>
+                        <div>Приоритет: {ads.ads[0].priority}</div>
                         </div>
                         <div class="justify-end ml-auto">
                             <img
@@ -103,6 +86,8 @@ export const listPage = () => {
                 </CardHeader>
             </div>
             </Card>
+            ))}
+            </>
             )}
         </div>
     </div>
