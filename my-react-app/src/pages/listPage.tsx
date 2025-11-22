@@ -11,6 +11,15 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react"
 import { Button } from "../components/ui/button";
 import { api } from "@/api/api";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 // import { Iads } from "../api/api";
 
 export const listPage = () => {
@@ -36,13 +45,12 @@ export const listPage = () => {
             Систему управления объявлениями для модерации
             
         </header>
-        <></>
         <div>
             {/*надо потом добавить пагинацию и вывод 10 элемнтов*/}
 
             {!isLoading && !error && ads && ads.ads.length > 0 && (
             <>
-            {ads.ads.map((ad) => (
+            {ads.ads.map(ad => (
             <Card class="border-2 border-gray-300 rounded-lg mx-4 my-4 px-4 flex">
             <div class = "flex-1">
                 <CardHeader>
@@ -87,6 +95,43 @@ export const listPage = () => {
             </div>
             </Card>
             ))}
+            {console.log(ads.pagination)}
+            <div>
+                <Pagination>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious onClick={() => setPage(ads.pagination.currentPage == 1 ? ads.pagination.currentPage : ads.pagination.currentPage - 1)} />
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink onClick={() => setPage(1)}>{1}</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationEllipsis />
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink onClick={() => setPage(ads.pagination.currentPage)}>{ads.pagination.currentPage}</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink onClick={() => setPage(ads.pagination.currentPage <= ads.pagination.totalPages - 1 ? ads.pagination.currentPage + 1 : ads.pagination.totalPages)}>{ads.pagination.currentPage <= ads.pagination.totalPages - 1 ? ads.pagination.currentPage + 1 :""}</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink onClick={() => setPage(ads.pagination.currentPage <= ads.pagination.totalPages - 2 ? ads.pagination.currentPage + 2 : ads.pagination.totalPages)}>{ads.pagination.currentPage <= ads.pagination.totalPages - 2 ? ads.pagination.currentPage + 2 :""}</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink onClick={() => setPage(ads.pagination.currentPage <= ads.pagination.totalPages - 3 ? ads.pagination.currentPage + 3 : ads.pagination.totalPages)}>{ads.pagination.currentPage <= ads.pagination.totalPages - 3 ? ads.pagination.currentPage + 3 : ""}</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationEllipsis />
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink onClick={() => setPage(ads.pagination.totalPages)}>{ads.pagination.totalPages}</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationNext onClick={() => setPage(ads.pagination.currentPage == ads.pagination.totalPages ? ads.pagination.currentPage : ads.pagination.currentPage + 1)} />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
             </>
             )}
         </div>
