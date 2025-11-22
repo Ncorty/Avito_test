@@ -20,34 +20,158 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-// import { Iads } from "../api/api";
+import { Label } from "@radix-ui/react-label";
+import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "../components/ui/input";
+
+
 
 export const listPage = () => {
     const [page, setPage] = React.useState(1);
     const [limit, setLimit] = React.useState(10);
-    const [status, setStatus] = React.useState<string | undefined>(undefined);
+    const [status, setStatus] = React.useState<string[]>([]);
+    const [category, setCategory] = React.useState<string>("");
     const [categoryId, setCategoryId] = React.useState<number | undefined>(undefined);
     const [minPrice, setMinPrice] = React.useState<number | undefined>(undefined);
     const [maxPrice, setMaxPrice] = React.useState<number | undefined>(undefined);
     const [search, setSearch] = React.useState<string | undefined>(undefined);
     const [sortBy, setSortBy] = React.useState<string | undefined>(undefined);
     const [sortOrder, setSortOrder] = React.useState<'asc' | 'desc' | undefined>(undefined);
+    const [open, setOpen] = React.useState(false);
     const {data: ads, isLoading, error} = useQuery({
         queryKey: ['ads', page, limit, status, categoryId, minPrice, maxPrice, search, sortBy, sortOrder],
         queryFn: () => api.getAllAds({page, limit, status, categoryId, minPrice, maxPrice, search, sortBy, sortOrder}),
     });
-    console.log(ads?.length);
+    const handleResetFilters = () => {
+        setCategoryId(undefined);
+        setMinPrice(undefined);
+        setMaxPrice(undefined);
+        setSearch(undefined);
+        setStatus([]);
+    }
     return (
     <div>
-        <header>
+        <div class="flex-1">
             {/*надо потом добавить фильтры и сортировку*/}
 
-            Систему управления объявлениями для модерации
+            <Card class="py-3 mb-4 border-4 mx-4 rounded-lg flex-1 flex-row">
+                <div>
+                    <CardHeader class="text-xl font-bold px-4 pb-3">
+                        Система управления объявлениями для модерации
+                    </CardHeader>
+                </div>
+                <div class="flex flex-row">
+                    <CardContent class="flex w-1/4">
+                        <div class="px-4">
+                            <div class="font-bold pb-3 text-lg">
+                                Фильтры по статусу:
+                            </div>
+                            <div className="flex flex-col gap-2 px-2">
+                                <div className="flex imes-center gap-3">
+                                    <Checkbox 
+                                    id="terms"
+                                    className="mr-2 border-2 border-gray-300 rounded w-5 h-5"
+                                    checked={status.includes("pending")}
+                                    onCheckedChange={(checked) => {
+                                        if (checked) {
+                                            setStatus([...status, "pending"]);
+                                        } else {
+                                            setStatus(status.filter((s) => s !== "pending"));
+                                        }
+                                    }}
+                                    />
+                                    <Label htmlFor="terms">На модерации</Label>
+                                </div>
+                                <div className="flex imes-center gap-3">
+                                    <Checkbox id="terms"
+                                    className="mr-2 border-2 border-gray-300 rounded w-5 h-5"
+                                    checked={status.includes("approved")}
+                                    onCheckedChange={(checked) => {
+                                        if (checked) {
+                                            setStatus([...status, "approved"]);
+                                        } else {
+                                            setStatus(status.filter((s) => s !== "approved"));
+                                        }
+                                    }}
+                                    />
+                                    <Label htmlFor="terms">одобрено</Label>
+                                </div>
+                                <div className="flex imes-center gap-3">
+                                    <Checkbox id="terms"
+                                    className="mr-2 border-2 border-gray-300 rounded w-5 h-5"
+                                    checked={status.includes("rejected")}
+                                    onCheckedChange={(checked) => {
+                                        if (checked) {
+                                            setStatus([...status, "rejected"]);
+                                        } else {
+                                            setStatus(status.filter((s) => s !== "rejected"));
+                                        }
+                                    }}
+                                    />
+                                    <Label htmlFor="terms">отклонено</Label>
+                                </div>
+                            </div>
+                        </div>
+                    </CardContent>
+                    <CardContent class="flex-col w-1/4">
+                        <div class="flex text-lg font-bold px-4 pb-3">
+                            Категории:
+                            Электроника,Недвижимость, Транспорт, Работа, Услуги, Животные, Мода, Детское.
+                        </div>      
+                        <Input
+                            value={categoryId}
+                            onChange={(e) => !!e ? setCategoryId(Number(e.target.value)) : setCategoryId(undefined)}
+                            placeholder="Введите номер категории"
+                            autoFocus
+                            className="text-base"
+                        />
+                    </CardContent>
+                    <CardContent class="flex-col w-1/4">
+                        <div class="flex text-lg font-bold px-4 pb-3">
+                            Цена:
+                        </div> 
+                        <div class="flex-row px-4 py-3">
+                            <Input
+                                value={minPrice}
+                                onChange={(e) => !!e ? setMinPrice(Number(e.target.value)) : setMinPrice(undefined)}
+                                placeholder="Мин"
+                                autoFocus
+                                className="text-base mb-2"
+                            />
+                            <Input
+                                value={maxPrice}
+                                onChange={(e) => !!e ? setMaxPrice(Number(e.target.value)) : setMaxPrice(undefined)}
+                                placeholder="Макс"
+                                autoFocus
+                                className="text-base"
+                            />
+                        </div>
+                    </CardContent>
+                    <CardContent class="flex-col w-1/4 m-3">
+                        <div class="flex text-lg font-bold px-4 pb-3">
+                            Поиск:
+                        </div> 
+                        <div class="mr-4">
+                        <Input
+                            value={search}
+                            onChange={(e) => !!e ? setSearch(e.target.value) : setSearch(undefined)}
+                            placeholder="Введите текст для поиска"
+                            autoFocus
+                            className="text-base px-4 py-3 m-3"
+                        />
+                        </div>
+                        <div class="m-3">
+                            <Button onClick={() => handleResetFilters()}>
+                                Сбросить фильтры
+                            </Button>
+                        </div>
+                    </CardContent>
+                
+                </div>
+            </Card>
             
-        </header>
+        </div>
         <div>
-            {/*надо потом добавить пагинацию и вывод 10 элемнтов*/}
-
             {!isLoading && !error && ads && ads.ads.length > 0 && (
             <>
             {ads.ads.map(ad => (
@@ -97,7 +221,7 @@ export const listPage = () => {
             ))}
             {console.log(ads.pagination)}
             <div>
-                <Pagination>
+                <Pagination class="py-3 flex justify-center">
                     <PaginationContent>
                         <PaginationItem>
                             <PaginationPrevious onClick={() => setPage(ads.pagination.currentPage == 1 ? ads.pagination.currentPage : ads.pagination.currentPage - 1)} />

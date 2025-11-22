@@ -10,7 +10,8 @@
       "@/*": ["./src/*"]
     },
     "types": [
-      "./node_modules/network-information-types"
+      "./node_modules/network-information-types",
+      "node"
     ],
   }
 }
