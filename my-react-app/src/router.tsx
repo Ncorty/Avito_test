@@ -1,6 +1,6 @@
 import { createRouter, createRoute, createRootRoute } from '@tanstack/react-router';
-import { root } from "postcss";
 import { listPage } from './pages/listPage';
+import { adPage } from './pages/adPage';
 
 const rootRoute = createRootRoute({});
 
@@ -10,7 +10,13 @@ const listRoute = createRoute({
   path: '/list',
 });
 
-const routeTree = rootRoute.addChildren([listRoute]);
+const adRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  component: adPage,
+  path: '/item/$id',
+});
+
+const routeTree = rootRoute.addChildren([listRoute, adRoute]);
 export const router = createRouter({
   routeTree,
 });

@@ -32,7 +32,7 @@ export interface Iads{
         totalAds: number;
         registeredAt: string;
     };
-    charecteristics: {
+    characteristics: {
         Состояние: string;
         Гарантия: string;
         Производитель: string;
@@ -74,6 +74,18 @@ export const api = {
     },
     getAds: async (id: number)=>{
         const response = await axios.get<Iads>(`${API_URL}/ads/${id}`);
+        return response.data;
+    },
+    approveAd: async (id: number)=>{
+        const response = await axios.post(`${API_URL}/ads/${id}/approve`, {});
+        return response.data;
+    },
+    rejectAd: async (id: number, reason: string, comment: string)=>{
+        const response = await axios.post(`${API_URL}/ads/${id}/reject`, {reason, comment});
+        return response.data;
+    },
+    requestAd: async (id: number, reason: string, comment: string)=>{
+        const response = await axios.post(`${API_URL}/ads/${id}/request-сhanges`, {reason, comment});
         return response.data;
     }
 }

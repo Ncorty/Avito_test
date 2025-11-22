@@ -23,6 +23,8 @@ import {
 import { Label } from "@radix-ui/react-label";
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "../components/ui/input";
+import {useNavigate} from "@tanstack/react-router";
+
 
 
 
@@ -42,6 +44,7 @@ export const listPage = () => {
         queryKey: ['ads', page, limit, status, categoryId, minPrice, maxPrice, search, sortBy, sortOrder],
         queryFn: () => api.getAllAds({page, limit, status, categoryId, minPrice, maxPrice, search, sortBy, sortOrder}),
     });
+    const navigate = useNavigate();
     const handleResetFilters = () => {
         setCategoryId(undefined);
         setMinPrice(undefined);
@@ -61,7 +64,7 @@ export const listPage = () => {
                     </CardHeader>
                 </div>
                 <div class="flex flex-row">
-                    <CardContent class="flex w-1/4">
+                    <CardContent class="flex w-1/4">{/*Выбор состояния*/}
                         <div class="px-4">
                             <div class="font-bold pb-3 text-lg">
                                 Фильтры по статусу:
@@ -113,7 +116,7 @@ export const listPage = () => {
                             </div>
                         </div>
                     </CardContent>
-                    <CardContent class="flex-col w-1/4">
+                    <CardContent class="flex-col w-1/4">{/*Выбор категории*/}
                         <div class="flex text-lg font-bold px-4 pb-3">
                             Категории:
                             Электроника,Недвижимость, Транспорт, Работа, Услуги, Животные, Мода, Детское.
@@ -126,7 +129,7 @@ export const listPage = () => {
                             className="text-base"
                         />
                     </CardContent>
-                    <CardContent class="flex-col w-1/4">
+                    <CardContent class="flex-col w-1/4">{/*Выбор цены*/}
                         <div class="flex text-lg font-bold px-4 pb-3">
                             Цена:
                         </div> 
@@ -147,7 +150,7 @@ export const listPage = () => {
                             />
                         </div>
                     </CardContent>
-                    <CardContent class="flex-col w-1/4 m-3">
+                    <CardContent class="flex-col w-1/4 m-3">{/*Поиск*/}
                         <div class="flex text-lg font-bold px-4 pb-3">
                             Поиск:
                         </div> 
@@ -212,7 +215,9 @@ export const listPage = () => {
                     <CardFooter class="flex items-center gap-4 py-2">
                         Цена : {ad.price} ₽
                         <div class="ml-auto">
-                            <Button>Подробнее</Button>
+                            <Button onClick={() => navigate({ to: "/item/$id", params: { id: ad.id } })}>
+                                Подробнее
+                            </Button>
                         </div>
                     </CardFooter>
                 </CardHeader>
