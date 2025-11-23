@@ -24,6 +24,7 @@ import { Label } from "@radix-ui/react-label";
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "../components/ui/input";
 import {useNavigate} from "@tanstack/react-router";
+import { NativeSelect, NativeSelectOption } from "../components/ui/native-select";
 
 
 
@@ -167,6 +168,24 @@ export const listPage = () => {
             
         </div>
         <div>
+            <div>
+                <Card className="border-2 border-gray-300 rounded-lg mx-4 px-5 flex">
+                    <NativeSelect
+                    onChange={(event) => {
+                        const value = event.target.value.split(":");
+                        setSortBy(!!value[0] ? value[0] : undefined);
+                        setSortOrder(!!value[1] ? value[1] as 'asc' | 'desc' : undefined);
+                    }}
+                    >
+                        <NativeSelectOption value={[":"]}>Сортировка по... </NativeSelectOption>
+                        <NativeSelectOption value={"createdAt:asc"}>По дате во возрастанию</NativeSelectOption>
+                        <NativeSelectOption value={"createdAt:desc"}>По дате по убывании</NativeSelectOption>
+                        <NativeSelectOption value={"price:desc"}> Дороже </NativeSelectOption>
+                        <NativeSelectOption value={"price:asc"}> Дешевле </NativeSelectOption>
+                        <NativeSelectOption value={"priority:desc"}> По приоритету </NativeSelectOption>
+                    </NativeSelect>
+                </Card>
+            </div>
             {!isLoading && !error && ads && ads.ads.length > 0 && (
             <>
             <div className="grid grid-cols-2 gap-4">

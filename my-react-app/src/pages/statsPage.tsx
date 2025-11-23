@@ -39,8 +39,6 @@ export const statsPage = () => {
     const sec = totalSeconds % 60;
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const hours = Math.floor(totalSeconds / 3600);
-    console.log(arDataDecisions)
-    console.log(dataDecisions);
     return ( 
         <div className="bg-gray-50 min-h-screen py-10">
             {!isLoading && !error && stats && (

@@ -69,7 +69,6 @@ type GetAdsParams = {
 export const api = {
     getAllAds: async (params: GetAdsParams)=>{
         const response = await axios.get<IadsResponse>(`${API_URL}/ads`, {params});
-        console.log(response.data);
         return response.data;
     },
     getAds: async (id: number)=>{
