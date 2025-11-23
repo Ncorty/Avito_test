@@ -56,7 +56,7 @@ export const listPage = () => {
     return (
     <div>
         <div className="flex-1 py-2">
-            <Card class="py-3 mb-4 border-4 mx-4 rounded-lg flex-1 flex-row">
+            <Card class="py-3 mb-4 border-4 mx-4 rounded-lg flex-1 flex-row ">
                 <div>
                     <CardHeader class="text-xl font-bold px-4 pb-3">
                         <Label className="text-xl font-bold px-4 pb-3">Система управления объявлениями для модерации</Label>
@@ -165,7 +165,6 @@ export const listPage = () => {
                 
                 </div>
             </Card>
-            
         </div>
         <div>
             <div>
@@ -191,7 +190,7 @@ export const listPage = () => {
             <div className="grid grid-cols-2 gap-4">
             {ads.ads.map(ad => (
             <Card class="border-2 border-gray-300 rounded-lg mx-4 my-4 px-4 flex">
-            <div class = "flex-1">
+            <div class= "flex-1">
                 <CardHeader>
                     <CardTitle class="py-2">{ad.title}</CardTitle> 
                     <CardDescription class="flex flex-row">
