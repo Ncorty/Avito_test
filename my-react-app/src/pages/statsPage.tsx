@@ -69,7 +69,7 @@ export const statsPage = () => {
                                         Среднее Время
                                     </CardHeader>
                                     <CardAction className="flex items-center">
-                                        {!!hours && `${hours} ч`} {!!minutes && `${minutes} мин`} {sec}с
+                                        {!!hours && `${hours} ч`} {!!minutes && `${minutes} мин`} {sec} с
                                     </CardAction>
                                 </Card>
                             </CardAction>

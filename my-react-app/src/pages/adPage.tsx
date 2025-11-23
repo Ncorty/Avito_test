@@ -28,6 +28,10 @@ export const adPage = () => {
         await  api.rejectAd(Number(id), reason === "Другое" ? anotherReason : reason, "");
         navigate({to: "/list"});
     }
+    const requestChangesHandler = async () => {
+        await  api.requestAd(Number(id), reason, "")
+        navigate({to: "/list"});
+    }
     return ( 
         <div>
             {!isLoading && !error && ad && (
@@ -163,9 +167,29 @@ export const adPage = () => {
 
                     </div>
                     <div class="flex-row">
-                        <Button>
-                            На доработку
-                        </Button>
+                        <AlertDialog>
+                            <AlertDialogTrigger>
+                                <Button>
+                                    На доработку
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogTitle>Укажите комментарий для доработки</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    <Input 
+                                        value={anotherReason}
+                                        onChange={(e) => {!!e ? setAnotherReason(e.target.value) : setAnotherReason(""); setReason("Другое")}}
+                                        placeholder="Укажите причину"
+                                        autoFocus
+                                        />
+                                </AlertDialogDescription>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Отмена</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => requestChangesHandler()}>Подтвердить</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                        
                     </div>
                 </div>
                 <div class="flex-row">{/*Тут будут кнопки для навигации */}

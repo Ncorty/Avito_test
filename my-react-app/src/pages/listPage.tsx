@@ -54,7 +54,7 @@ export const listPage = () => {
     }
     return (
     <div>
-        <div class="flex-1">
+        <div className="flex-1">
             {/*надо потом добавить фильтры и сортировку*/}
 
             <Card class="py-3 mb-4 border-4 mx-4 rounded-lg flex-1 flex-row">
@@ -63,7 +63,7 @@ export const listPage = () => {
                         Система управления объявлениями для модерации
                     </CardHeader>
                 </div>
-                <div class="flex flex-row">
+                <div className="flex flex-row">
                     <CardContent class="flex w-1/4">{/*Выбор состояния*/}
                         <div class="px-4">
                             <div class="font-bold pb-3 text-lg">
@@ -97,7 +97,7 @@ export const listPage = () => {
                                         }
                                     }}
                                     />
-                                    <Label htmlFor="terms">одобрено</Label>
+                                    <Label htmlFor="terms">Одобрено</Label>
                                 </div>
                                 <div className="flex imes-center gap-3">
                                     <Checkbox id="terms"
@@ -111,7 +111,7 @@ export const listPage = () => {
                                         }
                                     }}
                                     />
-                                    <Label htmlFor="terms">отклонено</Label>
+                                    <Label htmlFor="terms">Отклонено</Label>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +119,7 @@ export const listPage = () => {
                     <CardContent class="flex-col w-1/4">{/*Выбор категории*/}
                         <div class="flex text-lg font-bold px-4 pb-3">
                             Категории:
-                            Электроника,Недвижимость, Транспорт, Работа, Услуги, Животные, Мода, Детское.
+                            1 - Электроника, 2 - Недвижимость, Транспорт, Работа, Услуги, Животные, Мода, Детское.
                         </div>      
                         <Input
                             value={categoryId}
