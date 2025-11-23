@@ -54,23 +54,21 @@ export const listPage = () => {
     }
     return (
     <div>
-        <div className="flex-1">
-            {/*надо потом добавить фильтры и сортировку*/}
-
+        <div className="flex-1 py-2">
             <Card class="py-3 mb-4 border-4 mx-4 rounded-lg flex-1 flex-row">
                 <div>
                     <CardHeader class="text-xl font-bold px-4 pb-3">
                         <Label className="text-xl font-bold px-4 pb-3">Система управления объявлениями для модерации</Label>
                     </CardHeader>
                 </div>
-                <div className="flex flex-row">
-                    <CardContent class="flex w-1/4">{/*Выбор состояния*/}
+                <div className="flex flex-row p-4 m-4 gap-4">
+                    <CardContent className="flex flex-col flex w-1/4 p-4 bg-white rounded-lg shadow">{/*Выбор состояния*/}
                         <div class="px-4">
-                            <div class="font-bold pb-3 text-lg">
+                            <div className="font-bold text-lg mb-3">
                                 Фильтры по статусу:
                             </div>
-                            <div className="flex flex-col gap-2 px-2">
-                                <div className="flex imes-center gap-3">
+                            <div className="flex flex-col gap-3">
+                                <div className="flex items-center gap-2">
                                     <Checkbox 
                                     id="terms"
                                     className="mr-2 border-2 border-gray-300 rounded w-5 h-5"
@@ -85,8 +83,8 @@ export const listPage = () => {
                                     />
                                     <Label htmlFor="terms">На модерации</Label>
                                 </div>
-                                <div className="flex imes-center gap-3">
-                                    <Checkbox id="terms"
+                                <div className="flex items-center gap-2">
+                                    <Checkbox id="terms-2"
                                     className="mr-2 border-2 border-gray-300 rounded w-5 h-5"
                                     checked={status.includes("approved")}
                                     onCheckedChange={(checked) => {
@@ -97,10 +95,10 @@ export const listPage = () => {
                                         }
                                     }}
                                     />
-                                    <Label htmlFor="terms">Одобрено</Label>
+                                    <Label htmlFor="terms-2">Одобрено</Label>
                                 </div>
-                                <div className="flex imes-center gap-3">
-                                    <Checkbox id="terms"
+                                <div className="flex items-center gap-2">
+                                    <Checkbox id="terms-3"
                                     className="mr-2 border-2 border-gray-300 rounded w-5 h-5"
                                     checked={status.includes("rejected")}
                                     onCheckedChange={(checked) => {
@@ -111,14 +109,14 @@ export const listPage = () => {
                                         }
                                     }}
                                     />
-                                    <Label htmlFor="terms">Отклонено</Label>
+                                    <Label htmlFor="terms-3">Отклонено</Label>
                                 </div>
                             </div>
                         </div>
                     </CardContent>
-                    <CardContent class="flex-col w-1/4">{/*Выбор категории*/}
-                        <div class="flex text-lg font-bold px-4 pb-3">
-                            Категории:
+                    <CardContent class="flex-col w-1/4 p-4 bg-white rounded-lg shadow">{/*Выбор категории*/}
+                    <div className="text-lg font-bold mb-2">Категории: </div>
+                        <div className="text-sm text-gray-500 mb-4">
                             1 - Электроника, 2 - Недвижимость, 3 - Транспорт, 4 - Работа, 5 - Услуги, 6 - Животные, 7 - Мода, 8 - Детское.
                         </div>      
                         <Input
@@ -129,11 +127,11 @@ export const listPage = () => {
                             className="text-base"
                         />
                     </CardContent>
-                    <CardContent class="flex-col w-1/4">{/*Выбор цены*/}
-                        <div class="flex text-lg font-bold px-4 pb-3">
+                    <CardContent class="flex flex-col w-1/4 p-4 bg-white rounded-lg shadow">{/*Выбор цены*/}
+                        <div className="flex text-lg font-bold mb-2">
                             Цена:
                         </div> 
-                        <div class="flex-row px-4 py-3">
+                        <div className="flex flex-row gap-2">
                             <Input
                                 value={minPrice}
                                 onChange={(e) => !!e ? setMinPrice(Number(e.target.value)) : setMinPrice(undefined)}
@@ -150,24 +148,18 @@ export const listPage = () => {
                             />
                         </div>
                     </CardContent>
-                    <CardContent class="flex-col w-1/4 m-3">{/*Поиск*/}
-                        <div class="flex text-lg font-bold px-4 pb-3">
-                            Поиск:
-                        </div> 
-                        <div class="mr-4">
+                    <CardContent className="flex flex-col w-1/4 p-4 bg-white rounded-lg shadow">{/*Поиск*/}
+                        <div className="text-lg font-bold mb-2">Поиск</div>
                         <Input
                             value={search}
                             onChange={(e) => !!e ? setSearch(e.target.value) : setSearch(undefined)}
                             placeholder="Введите текст для поиска"
                             autoFocus
-                            className="text-base px-4 py-3 m-3"
+                            className="text-base px-4 py-3 mb-4"
                         />
-                        </div>
-                        <div class="m-3">
-                            <Button onClick={() => handleResetFilters()}>
-                                Сбросить фильтры
-                            </Button>
-                        </div>
+                        <Button className="mt-2" variant="outline" onClick={() => handleResetFilters()}>
+                            Сбросить фильтры
+                        </Button>
                     </CardContent>
                 
                 </div>
@@ -177,11 +169,11 @@ export const listPage = () => {
         <div>
             {!isLoading && !error && ads && ads.ads.length > 0 && (
             <>
+            <div className="grid grid-cols-2 gap-4">
             {ads.ads.map(ad => (
             <Card class="border-2 border-gray-300 rounded-lg mx-4 my-4 px-4 flex">
             <div class = "flex-1">
                 <CardHeader>
-                    {/*надо потом добавить заполнением данным с бэка*/}
                     <CardTitle class="py-2">{ad.title}</CardTitle> 
                     <CardDescription class="flex flex-row">
                         <div>
@@ -214,7 +206,7 @@ export const listPage = () => {
                     </CardDescription>
                     <CardFooter class="flex items-center gap-4 py-2">
                         Цена : {ad.price} ₽
-                        <div class="ml-auto">
+                        <div class="">
                             <Button onClick={() => navigate({ to: "/item/$id", params: { id: ad.id } })}>
                                 Подробнее
                             </Button>
@@ -224,7 +216,7 @@ export const listPage = () => {
             </div>
             </Card>
             ))}
-            {console.log(ads.pagination)}
+            </div>
             <div>
                 <Pagination class="py-3 flex justify-center">
                     <PaginationContent>
