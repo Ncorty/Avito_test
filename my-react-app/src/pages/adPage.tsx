@@ -1,6 +1,6 @@
 import {useNavigate, useParams, useSearch} from "@tanstack/react-router";
 import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carousel";
-import { Card, CardContent } from "../components/ui/card";
+
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../api/api";
 import { Table, TableHeader, TableHead, TableBody, TableCell, TableRow } from "../components/ui/table";
@@ -25,185 +25,217 @@ export const adPage = () => {
         navigate({to: "/list"});
     }
     const rejectHandler = async () => {
-        await  api.rejectAd(Number(id), reason === "Другое" ? anotherReason : reason, "");
+        await  api.rejectAd(Number(id), reason, anotherReason);
         navigate({to: "/list"});
     }
     const requestChangesHandler = async () => {
-        await  api.requestAd(Number(id), reason, "")
+        await  api.requestAd(Number(id), reason, anotherReason)
         navigate({to: "/list"});
     }
     return ( 
         <div>
             {!isLoading && !error && ad && (
-            <div className="flex-col">            
-                <div>{/*Тут карусель для фоток*/}
-                    <Carousel className="w-full max-w-xs">
-                        <CarouselContent>
-                            {Array.from({ length: ad.images.length }).map((_, index) => (
-                                <CarouselItem key={index}>
-                                    <div className="p-1">
-                                        <Card>
-                                            <CardContent className="flex aspect-square items-center justify-center p-6">
-                                                <img src={ad.images[index]} alt={`Image ${index + 1}`} className="max-h-full max-w-full object-contain"/>
-                                                {/* <span className="text-4xl font-semibold">{index + 1}</span> */}
-                                            </CardContent>
-                                        </Card>
-
-                                    </div>
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                    </Carousel>
+            <div className="grid grid-cols-2 gap-8 p-8 bg-white rounded-lg shadow max-w-5xl mx-auto w-full">            
+                <div className="col-span-1 mb-4">{/*Тут карусель для фоток*/}
+                    <div className="w-full max-w-lg mx-auto h-[340px] flex items-center justify-center bg-white rounded-xl shadow-lg">
+                        <Carousel className="w-full h-full">
+                            <CarouselContent>
+                                {Array.from({ length: ad.images.length }).map((_, index) => (
+                                    <CarouselItem key={index}>
+                                        <div className="flex items-center justify-center w-full h-[300px]">
+                                            <img src={ad.images[index]} alt={`Image ${index + 1}`} className="max-h-[280px] max-w-full object-contain rounded-lg shadow" />
+                                        </div>
+                                    </CarouselItem>
+                                ))}
+                            </CarouselContent>
+                        </Carousel>
+                    </div>
                 </div>
-                <div>{/*Тут описание товара*/}
-                    {ad.description}
+                <div className="col-span-1 mb-4 p-6 bg-gray-50 rounded-lg shadow-sm w-full">{/*Тут описание товара*/}
+                    <span className="text-lg font-semibold">Описание:</span>
+                    <div className="mt-2 text-gray-700">{ad.description}</div>
                 </div>
-                <div>{/*Тут характеристики товара в виде таблицы */}
-                    <Table>
+                <div className="col-span-2 mb-4 p-6 bg-gray-50 rounded-lg shadow-sm w-full">{/*Тут характеристики товара в виде таблицы */}
+                    <span className="text-lg font-semibold">Характеристики:</span>
+                    <Table className="mt-2 w-full">
                         <TableBody>
                             {Object.entries(ad.characteristics).map(([key, value]) => (
                                 <TableRow key={key}>
-                                    <TableCell>{key}</TableCell>
-                                    <TableCell>{value}</TableCell>
+                                    <TableCell className="font-medium text-gray-600 w-1/3">{key}</TableCell>
+                                    <TableCell className="text-gray-800 w-2/3">{value}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
-                                
                 </div>
-                <div>{/*Тут описание продовца */}
-                    <Label>
-                        Продавец: {ad.seller.name} | Рейтинг: {ad.seller.rating} | Всего объявлений: {ad.seller.totalAds} 
+                <div className="col-span-2 mb-4 p-6 bg-gray-50 rounded-lg shadow-sm w-full">{/*Тут описание продавца */}
+                    <span className="text-lg font-semibold">Продавец:</span>
+                    <div className="mt-2 text-gray-700">
+                        {ad.seller.name} | Рейтинг: {ad.seller.rating} | Всего объявлений: {ad.seller.totalAds} 
                         | Зарегистрирован: {new Date(ad.seller.registeredAt).toLocaleString('ru-RU',{
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric',
-                        // hour: 'numeric',
-                        // minute: 'numeric',
                         })}
-                    </Label>
-                </div>
-                <div>{/*Тут история модерации */}
-                    <Label>История модерации:</Label>
-                    <Label class="flex-col">{ad.moderationHistory.map(history => (
-                        <div class="flex"key={history.id}>
-                            Модератор: {history.moderatorName} | Действие: {history.action} | Причина: {history.reason} | Комментарий: {history.comment} | Время: {new Date(history.timestamp).toLocaleString('ru-RU')}
-                        </div>
-                    ))}</Label>
-                </div>
-                <div class="flex-row">{/*Тут будут кнопки для модерации*/}
-                    <div class="flex-row">
-                        <Button onClick={() => approveHandler()}>
-                            Одобрить
-                        </Button>
                     </div>
-                    <div class="flex-row">
+                </div>
+                <div className="col-span-2 mb-4 p-6 bg-gray-50 rounded-lg shadow-sm w-full">{/*Тут история модерации */}
+                    <span className="text-lg font-semibold">История модерации:</span>
+                    <div className="grid grid-cols-2 gap-4 mt-2">
+                        {ad.moderationHistory.map(history => (
+                            <div className="flex flex-col text-gray-700 bg-white rounded p-4 shadow-sm" key={history.id}>
+                                <span><b>Модератор:</b> {history.moderatorName}</span>
+                                <span><b>Действие:</b> {history.action}</span>
+                                <span><b>Причина:</b> {history.reason}</span>
+                                <span><b>Комментарий:</b> {history.comment}</span>
+                                <span><b>Время:</b> {new Date(history.timestamp).toLocaleString('ru-RU')}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="col-span-2 flex flex-row gap-6 mb-6 w-full">{/*Тут будут кнопки для модерации*/}
+                    <Button className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-lg shadow" onClick={() => approveHandler()}>
+                        Одобрить
+                    </Button>
+                    <div>
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
-                                <Button>
+                                <Button className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow">
                                     Отклонить
                                 </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
-                                <AlertDialogTitle>Выберите причину для отклонения</AlertDialogTitle>
+                                <AlertDialogTitle>Выберите причину и комментарий для отклонения</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    <div class="flex flex-col gap-6">
-                                        <div class="flex items-center gap-3">
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div className="flex flex-col gap-3">
                                             <Checkbox id="reason-1" 
                                             checked={reason === "Запрещенный товар"}
                                             onCheckedChange={() => setReason("Запрещенный товар")}
                                             />
                                             <Label htmlFor="reason-1"> Запрещенный товар </Label>
-                                        </div>
-                                        <div class="flex items-center gap-3">
                                             <Checkbox id="reason-2" 
                                             checked={reason === "Неверная категория"}
                                             onCheckedChange={() => setReason("Неверная категория")}
                                             />
                                             <Label htmlFor="reason-2"> Неверная категория </Label>
-                                        </div>
-                                        <div class="flex items-center gap-3">
                                             <Checkbox id="reason-3" 
                                             checked={reason === "Некоретное описание"}
                                             onCheckedChange={() => setReason("Некоретное описание")}
                                             />
                                             <Label htmlFor="reason-3"> Некоретное описание </Label>
-                                        </div>
-                                        <div class="flex items-center gap-3">
                                             <Checkbox id="reason-4" 
                                             checked={reason === "Проблемы с фото"}
                                             onCheckedChange={() => setReason("Проблемы с фото")}
                                             />
                                             <Label htmlFor="reason-4"> Проблемы с фото </Label>
-                                        </div>
-                                        <div class="flex items-center gap-3">
                                             <Checkbox id="reason-5" 
                                             checked={reason === "Подозрение на мошенничество"}
                                             onCheckedChange={() => setReason("Подозрение на мошенничество")}
                                             />
                                             <Label htmlFor="reason-5"> Подозрение на мошенничество </Label>
-                                        </div>
-                                        <div class="flex items-center gap-3">
                                             <Checkbox id="reason-6" 
                                             checked={reason === "Другое"}
                                             onCheckedChange={() => setReason("Другое")}
                                             />
                                             <Label htmlFor="reason-6"> Другое </Label>
+                                        </div>
+                                        <div className="flex flex-col gap-3">
+                                            <Label htmlFor="comment">Комментарий</Label>
                                             <Input 
-                                            value={anotherReason}
-                                            onChange={(e) => {!!e ? setAnotherReason(e.target.value) : setAnotherReason(""); setReason("Другое")}}
-                                            placeholder="Укажите причину"
-                                            autoFocus
+                                                id="comment"
+                                                value={anotherReason}
+                                                onChange={(e) => setAnotherReason(e.target.value)}
+                                                placeholder="Укажите причину или комментарий"
+                                                className="min-h-[80px]"
                                             />
                                         </div>
                                     </div>
                                 </AlertDialogDescription>
                                 <AlertDialogFooter>
                                     <AlertDialogCancel>Отмена</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => rejectHandler()}>Подтвердить</AlertDialogAction>
+                                    <AlertDialogAction className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow" onClick={() => rejectHandler()}>
+                                        Подтвердить
+                                    </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
-
                     </div>
-                    <div class="flex-row">
+                    <div>
                         <AlertDialog>
                             <AlertDialogTrigger>
-                                <Button>
+                                <Button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded-lg shadow">
                                     На доработку
                                 </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
-                                <AlertDialogTitle>Укажите комментарий для доработки</AlertDialogTitle>
+                                <AlertDialogTitle>Выберите причину и комментарий для доработки</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    <Input 
-                                        value={anotherReason}
-                                        onChange={(e) => {!!e ? setAnotherReason(e.target.value) : setAnotherReason(""); setReason("Другое")}}
-                                        placeholder="Укажите причину"
-                                        autoFocus
-                                        />
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div className="flex flex-col gap-3">
+                                            <Checkbox id="reason-1" 
+                                            checked={reason === "Запрещенный товар"}
+                                            onCheckedChange={() => setReason("Запрещенный товар")}
+                                            />
+                                            <Label htmlFor="reason-1"> Запрещенный товар </Label>
+                                            <Checkbox id="reason-2" 
+                                            checked={reason === "Неверная категория"}
+                                            onCheckedChange={() => setReason("Неверная категория")}
+                                            />
+                                            <Label htmlFor="reason-2"> Неверная категория </Label>
+                                            <Checkbox id="reason-3" 
+                                            checked={reason === "Некоретное описание"}
+                                            onCheckedChange={() => setReason("Некоретное описание")}
+                                            />
+                                            <Label htmlFor="reason-3"> Некоретное описание </Label>
+                                            <Checkbox id="reason-4" 
+                                            checked={reason === "Проблемы с фото"}
+                                            onCheckedChange={() => setReason("Проблемы с фото")}
+                                            />
+                                            <Label htmlFor="reason-4"> Проблемы с фото </Label>
+                                            <Checkbox id="reason-5" 
+                                            checked={reason === "Подозрение на мошенничество"}
+                                            onCheckedChange={() => setReason("Подозрение на мошенничество")}
+                                            />
+                                            <Label htmlFor="reason-5"> Подозрение на мошенничество </Label>
+                                            <Checkbox id="reason-6" 
+                                            checked={reason === "Другое"}
+                                            onCheckedChange={() => setReason("Другое")}
+                                            />
+                                            <Label htmlFor="reason-6"> Другое </Label>
+                                        </div>
+                                        <div className="flex flex-col gap-3">
+                                            <Label htmlFor="comment">Комментарий</Label>
+                                            <Input 
+                                                id="comment"
+                                                value={anotherReason}
+                                                onChange={(e) => setAnotherReason(e.target.value)}
+                                                placeholder="Укажите причину или комментарий"
+                                                className="min-h-[80px]"
+                                            />
+                                        </div>
+                                    </div>
                                 </AlertDialogDescription>
                                 <AlertDialogFooter>
                                     <AlertDialogCancel>Отмена</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => requestChangesHandler()}>Подтвердить</AlertDialogAction>
+                                    <AlertDialogAction className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow" onClick={() => requestChangesHandler()}>
+                                        Подтвердить
+                                    </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
-                        
                     </div>
                 </div>
-                <div class="flex-row">{/*Тут будут кнопки для навигации */}
-                    <div class="flex">
-                        <Button className="flex justify-start gap-4 px-10 mr-10" onClick={() => navigate({ to: "/list" })}>
-                            Назад к списку
-                        </Button>
-                        <Button className="flex justify-end gap-4" onClick={()=> navigate({to: "/item/$id", params: {id: Number(id) - 1}})}>
-                            Предыдущее объявление
-                        </Button>
-                        <Button className="flex justify-end gap-4 mx-4" onClick={()=> navigate({to: "/item/$id", params: {id: Number(id) + 1}})}>
-                            Следующее объявление
-                        </Button>
-                    </div>
+                <div className="col-span-2 flex flex-row gap-6 mt-8 w-full">{/*Тут будут кнопки для навигации */}
+                    <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-6 py-2 rounded-lg shadow" onClick={() => navigate({ to: "/list" })}>
+                        Назад к списку
+                    </Button>
+                    <Button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow" onClick={()=> navigate({to: "/item/$id", params: {id: String(Number(id) - 1)}})}>
+                        Предыдущее объявление
+                    </Button>
+                    <Button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow" onClick={()=> navigate({to: "/item/$id", params: {id: String(Number(id) + 1)}})}>
+                        Следующее объявление
+                    </Button>
                 </div>
             </div>
             )} 

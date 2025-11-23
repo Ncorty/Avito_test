@@ -85,7 +85,7 @@ export const api = {
         return response.data;
     },
     requestAd: async (id: number, reason: string, comment: string)=>{
-        const response = await axios.post(`${API_URL}/ads/${id}/request-сhanges`, {params: {reason, comment}});
+        const response = await axios.post(`${API_URL}/ads/${id}/request-changes`, {reason, comment});
         return response.data;
     },
     statsSummaryAd: async(period: string)=>{
