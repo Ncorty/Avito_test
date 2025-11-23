@@ -87,5 +87,21 @@ export const api = {
     requestAd: async (id: number, reason: string, comment: string)=>{
         const response = await axios.post(`${API_URL}/ads/${id}/request-сhanges`, {reason, comment});
         return response.data;
+    },
+    statsSummaryAd: async(period: string)=>{
+        const response = await axios.get(`${API_URL}/stats/summary`, {params: {period}});
+        return response.data;
+    },
+    statsActivityAd: async(period: string)=>{
+        const response = await axios.get(`${API_URL}/stats/chart/activity`, {params: {period}});
+        return response.data;
+    },
+    statsDecisionsAd: async(period: string)=>{
+        const response = await axios.get(`${API_URL}/stats/chart/decisions`, {params: {period}});
+        return response.data;
+    },
+    statsCategoryAd: async(period: string)=>{
+        const response = await axios.get(`${API_URL}/stats/chart/categories`, {params: {period}});
+        return response.data;
     }
 }
