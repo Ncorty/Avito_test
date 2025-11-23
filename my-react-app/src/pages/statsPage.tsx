@@ -42,61 +42,59 @@ export const statsPage = () => {
     console.log(arDataDecisions)
     console.log(dataDecisions);
     return ( 
-        <div>
+        <div className="bg-gray-50 min-h-screen py-10">
             {!isLoading && !error && stats && (
-                <div>
-                    <div className="flex-1">{/*Здесь будут кнопки для выбора периода*/}
-                        <Button onClick={() => setDate("today")}> Сегодня</Button>
-                        <Button onClick={() => setDate("week")}> Последняя неделя</Button>
-                        <Button onClick={() => setDate("month")}> Последний месяц</Button>
+                <div className="max-w-6xl mx-auto flex flex-col items-center">
+                    <div className="flex gap-4 mb-8 justify-center">{/*Здесь будут кнопки для выбора периода*/}
+                        <Button variant="outline" className={date === "today" ? "border-blue-500 text-blue-600 font-bold" : ""} onClick={() => setDate("today")}>Сегодня</Button>
+                        <Button variant="outline" className={date === "week" ? "border-blue-500 text-blue-600 font-bold" : ""} onClick={() => setDate("week")}>Последняя неделя</Button>
+                        <Button variant="outline" className={date === "month" ? "border-blue-500 text-blue-600 font-bold" : ""} onClick={() => setDate("month")}>Последний месяц</Button>
                     </div>
-                    <div>{/*Здесь будет отображение статистики*/}
-                        <Card className="flex">
-                            <CardHeader>
+                    <div className="w-full flex flex-col items-center">{/*Здесь будет отображение статистики*/}
+                        <Card className="flex bg-white rounded-xl shadow p-6 mx-auto">
+                            <CardHeader className="text-2xl font-bold mb-4">
                                 Статистика за {date === "today" ? "сегодня" : date === "week" ? "последнюю неделю" : "последний месяц"}
                             </CardHeader>
-                            <CardAction className="flex">
-                                <Card className="flex-1 w-100 m-4 p-4 ">
-                                    <CardHeader className="flex items-center text-xl font-bold">
-                                        Всего объявлений проверено
+                            <CardAction className="flex flex-wrap gap-6 mb-6 justify-center">
+                                <Card className="flex-1 min-w-[220px] bg-gray-50 rounded-lg shadow p-4">
+                                    <CardHeader className="flex items-center text-xl font-bold mb-2">
+                                        Объявлений проверено
                                     </CardHeader>
-                                    <CardAction className="flex items-center">
+                                    <CardAction className="flex items-center text-2xl font-semibold text-blue-600">
                                         {stats.totalReviewed}
                                     </CardAction>
                                 </Card>
-                                <Card className="flex-1 w-100 m-4 p-4 ">
-                                    <CardHeader className="flex items-center text-xl font-bold">
+                                <Card className="flex-1 min-w-[220px] bg-gray-50 rounded-lg shadow p-4">
+                                    <CardHeader className="flex items-center text-xl font-bold mb-2">
                                         Среднее Время
                                     </CardHeader>
-                                    <CardAction className="flex items-center">
+                                    <CardAction className="flex items-center text-2xl font-semibold text-blue-600">
                                         {!!hours && `${hours} ч`} {!!minutes && `${minutes} мин`} {sec} с
                                     </CardAction>
                                 </Card>
-                            </CardAction>
-                            <CardAction className="flex">
-                                <Card className="flex-1 w-100 m-4 p-4 ">
-                                    <CardHeader className="flex items-center text-xl font-bold">
+                                <Card className="flex-1 min-w-[220px] bg-gray-50 rounded-lg shadow p-4">
+                                    <CardHeader className="flex items-center text-xl font-bold mb-2">
                                         Одобренные объявления
                                     </CardHeader>
-                                    <CardAction className="flex items-center">
+                                    <CardAction className="flex items-center text-2xl font-semibold text-green-600">
                                         {Math.round(stats.approvedPercentage)}%
                                     </CardAction>
                                 </Card>
-                                <Card className="flex-1 w-100 m-4 p-4 ">
-                                    <CardHeader className="flex items-center text-xl font-bold">
+                                <Card className="flex-1 min-w-[220px] bg-gray-50 rounded-lg shadow p-4">
+                                    <CardHeader className="flex items-center text-xl font-bold mb-2">
                                         Отклоненные объявления
                                     </CardHeader>
-                                    <CardAction className="flex items-center">
+                                    <CardAction className="flex items-center text-2xl font-semibold text-red-500">
                                         {Math.round(stats.rejectedPercentage)}%
                                     </CardAction>
                                 </Card>
                             </CardAction>
-                            <CardAction>
-                                <Card>
-                                    <CardHeader className="flex w-212 items-center text-xl font-bold">
+                            <CardAction className="w-full flex justify-center">
+                                <Card className="bg-gray-50 rounded-lg shadow p-4 my-6 w-full max-w-4xl mx-auto">
+                                    <CardHeader className="flex w-212 items-center text-xl font-bold mb-4">
                                         График активности
                                     </CardHeader>
-                                    <CardAction className="flex">
+                                    <CardAction className="flex justify-center">
                                         {loadingActivity ? "Загрузка..." : errorActivity ? "Ошибка загрузки данных" : (
                                         <ResponsiveContainer width={800} height={400}>
                                             <BarChart data={dataActivity}>
@@ -114,12 +112,12 @@ export const statsPage = () => {
                                     </CardAction>
                                 </Card>
                             </CardAction>
-                            <CardAction>
-                                <Card>
-                                    <CardHeader>
+                            <CardAction className="w-full flex justify-center">
+                                <Card className="bg-gray-50 rounded-lg shadow p-4 my-6 w-full max-w-4xl mx-auto">
+                                    <CardHeader className="mb-4">
                                         Диаграмма распределения решений
                                     </CardHeader>
-                                    <CardAction className="flex">
+                                    <CardAction className="flex justify-center">
                                         {loadingDecisions ? "Загрузка..." : errorDecisions ? "Ошибка загрузки данных" : (
                                             <ResponsiveContainer width={800} height={400}>
                                                 <PieChart>
@@ -145,12 +143,12 @@ export const statsPage = () => {
                                     </CardAction>
                                 </Card>
                             </CardAction>
-                            <CardAction>
-                                <Card>
-                                    <CardHeader>
+                            <CardAction className="w-full flex justify-center">
+                                <Card className="bg-gray-50 rounded-lg shadow p-4 my-6 w-full max-w-4xl mx-auto">
+                                    <CardHeader className="mb-4">
                                         График категорий
                                     </CardHeader>
-                                    <CardAction className="flex">
+                                    <CardAction className="flex justify-center">
                                         {loadingCategory ? "Загрузка..." : errorCategory ? "Ошибка загрузки данных" : (
                                             <ResponsiveContainer width={800} height={400}>
                                                 <BarChart data={arDataCategory}>
@@ -163,7 +161,6 @@ export const statsPage = () => {
                                                 </BarChart>
                                         </ResponsiveContainer>  
                                         )}
-                                            
                                     </CardAction>
                                 </Card>
                             </CardAction>
