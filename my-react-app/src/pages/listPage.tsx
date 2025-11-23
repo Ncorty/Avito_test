@@ -60,7 +60,7 @@ export const listPage = () => {
             <Card class="py-3 mb-4 border-4 mx-4 rounded-lg flex-1 flex-row">
                 <div>
                     <CardHeader class="text-xl font-bold px-4 pb-3">
-                        Система управления объявлениями для модерации
+                        <Label className="text-xl font-bold px-4 pb-3">Система управления объявлениями для модерации</Label>
                     </CardHeader>
                 </div>
                 <div className="flex flex-row">
@@ -119,11 +119,11 @@ export const listPage = () => {
                     <CardContent class="flex-col w-1/4">{/*Выбор категории*/}
                         <div class="flex text-lg font-bold px-4 pb-3">
                             Категории:
-                            1 - Электроника, 2 - Недвижимость, Транспорт, Работа, Услуги, Животные, Мода, Детское.
+                            1 - Электроника, 2 - Недвижимость, 3 - Транспорт, 4 - Работа, 5 - Услуги, 6 - Животные, 7 - Мода, 8 - Детское.
                         </div>      
                         <Input
-                            value={categoryId}
-                            onChange={(e) => !!e ? setCategoryId(Number(e.target.value)) : setCategoryId(undefined)}
+                            value={categoryId ? String(categoryId + 1) : categoryId == 0 ? String(categoryId + 1) : ""}
+                            onChange={(e) => !!e && e.target.value >= "0" ? setCategoryId(Number(e.target.value)- 1) : setCategoryId(undefined)}
                             placeholder="Введите номер категории"
                             autoFocus
                             className="text-base"
