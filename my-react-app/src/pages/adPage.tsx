@@ -71,8 +71,7 @@ export const adPage = () => {
                 <div className="col-span-2 mb-4 p-6 bg-gray-50 rounded-lg shadow-sm w-full">{/*Тут описание продавца */}
                     <span className="text-lg font-semibold">Продавец:</span>
                     <div className="mt-2 text-gray-700">
-                        {ad.seller.name} | Рейтинг: {ad.seller.rating} | Всего объявлений: {ad.seller.totalAds} 
-                        | Зарегистрирован: {new Date(ad.seller.registeredAt).toLocaleString('ru-RU',{
+                        {ad.seller.name} | Рейтинг: {ad.seller.rating} | Всего объявлений: {ad.seller.totalAds} | Зарегистрирован: {new Date(ad.seller.registeredAt).toLocaleString('ru-RU',{
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric',
