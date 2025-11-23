@@ -36,7 +36,7 @@
     npm install
     ```
 
-    or using yarn:
+    или yarn:
 
     ```bash
     yarn install
